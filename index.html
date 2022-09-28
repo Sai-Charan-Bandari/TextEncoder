@@ -42,15 +42,22 @@
             op+=val[j]; //either space or new line will be simply added to o/p
             continue; 
         }
-
-        let k=Math.floor(Math.random()*(arr.length));
-        while(arr2[k]!=""){
-         k=Math.floor(Math.random()*(arr.length));
+        let k;
+        if(arr2.indexOf(val[j])!=-1){
+            //the character has already occurred earlier
+            //hence an encoding character already exists
+            k=arr2.indexOf(val[j]);
         }
-        arr2[k]=val[j];//adding actual char to arr2
+        else{
+         k=Math.floor(Math.random()*(arr.length));
+            while(arr2[k]!=""){
+             k=Math.floor(Math.random()*(arr.length));
+            }
+            arr2[k]=val[j];//adding actual char to arr2
+        }
         op+=arr[k];//adding endcoded char to op
         console.log(k+" : "+val[j]+" = "+arr[k])
-    }
+        }
     // console.log(op);
     console.log(arr2);
     //displaying encoded text
