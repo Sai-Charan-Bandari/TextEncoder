@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <textarea name="" id="" cols="30" rows="10"></textarea>
+    <button onclick="verify()">Submit</button>
+</body>
+<script>
+    //arr , arr2 act as key:value pairs
+    let arr=['!','@','#','$','%','^','&','*','(',')','_','-','+','=','`','~','{','}','[',']','|',':',';','<','>','?','a','s','d','f','g','h','j','k','l','q','w','e','r','t','y','u','i','o','p','z','x','c','v','b','n','m','1','2','3','4','5','6','7','8','9','0'];
+    let arr2=[]; //contains actual-characters
+    let doc=document.getElementsByTagName('textarea')[0];
+
+    function verify(){
+        let val=document.getElementsByTagName('textarea')[0].value;
+        console.log(val);
+        if(val.substring(0,5)=='#BSC#')
+         decode(val.substring(6)) //removing tag line
+        else
+         encode() 
+    }
+    function encode(){
+    console.log("encoding");
+    let val=doc.value;
+    let op="#BSC#\n"; //adding tag line to op string
+     
+    // let conditonObj={}; //contains assigned characters in alphabetical order
+    let j=0;
+    //initializing arr2 to empty
+    for(;j<arr.length;j++){
+    arr2[j]="";
+    }
+    //substituting characters
+    for(j=0;j<val.length;j++){
+        //we dont need to use any encoding for spaces and new line
+        if(val[j]==' ' || val[j]=='\n'){
+            op+=val[j]; //either space or new line will be simply added to o/p
+            continue; 
+        }
+
+        let k=Math.floor(Math.random()*(arr.length));
+        while(arr2[k]!=""){
+         k=Math.floor(Math.random()*(arr.length));
+        }
+        arr2[k]=val[j];//adding actual char to arr2
+        op+=arr[k];//adding endcoded char to op
+        console.log(k+" : "+val[j]+" = "+arr[k])
+    }
+    // console.log(op);
+    console.log(arr2);
+    //displaying encoded text
+    doc.value=op;
+    }
+////////////////////////////////////    
+    function decode(val){
+        console.log('decoding');
+        let op="";
+        for(let j=0;j<val.length;j++){
+            // console.log('the '+j+"th character is "+val[j]);
+            if(val[j]==' ' || val[j]=='\n'){
+                op+=val[j];
+                continue;
+            }
+            let index=arr.indexOf(val[j])
+            console.log(val[j]);
+            op+= arr2[index];
+        }
+        doc.value=op;
+    }
+</script>
+</html>
