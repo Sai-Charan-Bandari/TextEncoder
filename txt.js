@@ -108,7 +108,7 @@
      val=val.substring(6);
      arr2=localStorage.getItem(id);
      if(arr2==null){
-        console.log("this id doesnot exist")
+        doc.value="this id doesnot exist";
         return;
      }
      //else decode
