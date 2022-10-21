@@ -2,11 +2,45 @@
  let arr=['!','@','#','$','%','^','&','*','(',')','_','-','+','=','`','~','{','}','[',']','|',':',';','<','>','?','a','s','d','f','g','h','j','k','l','q','w','e','r','t','y','u','i','o','p','z','x','c','v','b','n','m','1','2','3','4','5','6','7','8','9','0'];
  let arr2; //contains actual-characters
  let doc=document.getElementsByTagName('textarea')[0];
+ //initializing listOfIds if it doesnt exist
+ let listOfIds=localStorage.getItem('listOfIds');
+ if(listOfIds==null){
+    localStorage.setItem('listOfIds',JSON.stringify([]));
+ }
 
  function verify(){
      let val=document.getElementsByTagName('textarea')[0].value;
      console.log(val);
-     if(val.substring(0,5)=='#BSC#')
+     if(val=="#BSC# --admin"){
+        doc.value="--list\n--delete\n--find"
+     }else if(val=="#BSC# --admin --list"){
+        let listOfIds=JSON.parse(localStorage.getItem('listOfIds'));
+        console.log(listOfIds)
+        doc.value="";
+     }else if(val.substring(0,22)=="#BSC# --admin --delete"){
+        //syntax:#BSC# --delete [id]
+        //get id to be deleted..get characters after the '#BSC# --delete'+' ' part
+        let id=val.substring(23);
+        let arr2=localStorage.getItem(id);
+        if(arr2==null){
+            console.log("incorrect id");
+        }else{
+            localStorage.removeItem(id);
+            let listOfIds=JSON.parse(localStorage.getItem('listOfIds'));
+            listOfIds.splice(listOfIds.indexOf(id),1);
+            console.log(listOfIds)
+            localStorage.setItem('listOfIds',JSON.stringify(listOfIds));
+        }
+        doc.value="";
+     }else if(val.substring(0,20)=="#BSC# --admin --find"){
+        let id=val.substring(21);
+        let arr2=localStorage.getItem(id);
+        if(arr2==null){
+            console.log("id does not exist");
+        }else{
+            console.log(JSON.parse(arr2));
+        }
+     }else if(val.substring(0,5)=='#BSC#')
       decode(val.substring(6)) //removing tag line
      else
       encode() 
@@ -21,6 +55,10 @@
     id+=arr[k];
  }
  console.log(id);
+ //inserting id into listOfIds
+ let listOfIds=JSON.parse(localStorage.getItem('listOfIds'));
+ listOfIds.push(id);
+ localStorage.setItem('listOfIds',JSON.stringify(listOfIds));
  //start endcoding
  let val=doc.value;
  let op="#BSC#\n"; //adding tag line to op string
@@ -91,6 +129,8 @@
      console.log(op);
      //remove item from localStroage
      localStorage.removeItem(id);
+     //remove item id from listOfIds
+     let listOfIds=JSON.parse(localStorage.getItem('listOfIds'));
+     listOfIds.splice(listOfIds.indexOf(id),1);
+     localStorage.setItem('listOfIds',JSON.stringify(listOfIds));
  }
- 
- 
